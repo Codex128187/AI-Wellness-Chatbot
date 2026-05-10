@@ -1,8 +1,9 @@
+import os
 import redis.asyncio as redis
 
-redis_client = redis.Redis(
-    host="localhost",
-    port=6379,
-    db=0,
-    decode_responses=True,
-)
+REDIS_URL = os.environ.get("REDIS_URL", "redis://localhost:6379/0")
+
+try:
+    redis_client = redis.from_url(REDIS_URL, decode_responses=True)
+except Exception:
+    redis_client = None
